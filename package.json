@@ -65,6 +65,8 @@
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^2.5.3",
     "rimraf": "^2.5.4",
-    "semistandard": "^9.1.0"
+    "semistandard": "^9.1.0",
+    "sinon": "^1.17.6",
+    "sinon-chai": "^2.8.0"
   }
 }

@@ -1,16 +1,22 @@
+/*jshint expr: true*/
+
+import permissions, { middleware, hooks } from '../src';
 import { expect } from 'chai';
-import plugin from '../src';
 
-describe('feathers-permissions', () => {
+describe('Feathers Authentication', () => {
   it('is CommonJS compatible', () => {
-    expect(typeof require('../lib')).to.equal('function');
+    expect(typeof require('../lib')).to.equal('object');
   });
 
-  it('basic functionality', () => {
-    expect(typeof plugin).to.equal('function', 'It worked');
+  it('is ES6 compatible', () => {
+    expect(typeof permissions).to.equal('object');
   });
 
-  it('exposes the Service class', () => {
-    expect(plugin.Service).to.not.equal(undefined);
+  it('exposes hooks', () => {
+    expect(typeof hooks).to.equal('object');
+  });
+
+  it('exposes middleware', () => {
+    expect(typeof middleware).to.equal('object');
   });
 });
