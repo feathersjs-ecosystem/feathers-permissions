@@ -1,3 +1,5 @@
+if(!global._babelPolyfill) { require('babel-polyfill'); }
+
 /*jshint expr: true*/
 
 import permissions, { middleware, hooks } from '../src';
