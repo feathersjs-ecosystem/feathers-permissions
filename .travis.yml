@@ -6,4 +6,4 @@ node_js:
 code_climate:
   repo_token: '41ce2f721428ca518a0f2186e624cf53796d52e547e6381764dfca79ca5dbeaa'
 after_script:
-  - codeclimate-test-reporter < lcov.info
+  - codeclimate-test-reporter < coverage/lcov.info
