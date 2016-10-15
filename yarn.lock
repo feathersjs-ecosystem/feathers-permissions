@@ -1250,6 +1250,10 @@ eslint-config-standard@6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-6.2.0.tgz#1d2384ee074de6f6b6c0f2bbe976863032565aee"
 
+eslint-if-supported:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-if-supported/-/eslint-if-supported-1.0.1.tgz#c2a6583b134a2d4d838eae35ee4b8bc8d37e856e"
+
 eslint-plugin-promise@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-3.0.0.tgz#1528635d0160f3484e425cce2169cb74cec0186a"
