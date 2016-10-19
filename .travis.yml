@@ -6,6 +6,9 @@ node_js:
 addons:
   code_climate:
     repo_token: '41ce2f721428ca518a0f2186e624cf53796d52e547e6381764dfca79ca5dbeaa'
+notifications:
+  slack: feathersjs:T4tvpJFt27wJZABjLSg5OqMv
+  email: false
 before_script:
   - npm install -g codeclimate-test-reporter
 after_script:
