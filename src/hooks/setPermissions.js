@@ -1,3 +1,7 @@
+/*
+ * A hook to programmatically set permissions on a resource
+ */
+
 import Debug from 'debug';
 
 const debug = Debug('feathers-permissions:hooks:check-permissions');
@@ -10,12 +14,10 @@ const debug = Debug('feathers-permissions:hooks:check-permissions');
 // users:remove:1234 - can only remove user with id 1234
 // users:*:1234 - can call any service method for user with id 1234
 
-export default function checkPermissions (options = {}) {
-  // TODO (EK): Support `options.service` and `options.group` and normalize
-  // them to options.namespace internally here
+export default function setPermissions (options = {}) {
   return function (hook) {
     if (hook.type !== 'before') {
-      return Promise.reject(new Error(`The 'checkPermissions' hook should only be used as a 'before' hook.`));
+      return Promise.reject(new Error(`The 'setPermissions' hook should only be used as a 'before' hook.`));
     }
 
     // If it is an internal call then skip this hook
@@ -23,30 +25,20 @@ export default function checkPermissions (options = {}) {
       return Promise.resolve(hook);
     }
 
-    options = Object.assign({ on: 'user', field: 'permissions' }, options);
+    options = Object.assign({}, options);
 
-    let namespaces;
+    debug('Running setPermissions hook with options:', options);
 
-    if (options.service) {
-      namespaces = [options.service];
-    } else if (options.group) {
-      namespaces = [options.group];
-    } else if (options.roles) {
-      namespaces = options.roles;
-    }
-
-    debug('Running checkPermissions hook with options:', options);
-
-    if (!namespaces) {
-      return Promise.reject(new Error(`'service' or 'group' must be provided to the checkPermissions() hook.`));
+    if (!options.namespace) {
+      return Promise.reject(new Error(`'namespace' must be provided to the setPermissions() hook.`));
     }
 
     if (!options.on) {
-      return Promise.reject(new Error(`'on' must be provided to the checkPermissions() hook.`));
+      return Promise.reject(new Error(`'on' must be provided to the setPermissions() hook.`));
     }
 
     if (!options.field) {
-      return Promise.reject(new Error(`'field' must be provided to the checkPermissions() hook.`));
+      return Promise.reject(new Error(`'field' must be provided to the setPermissions() hook.`));
     }
 
     const entity = hook.params[options.on];
@@ -62,8 +54,7 @@ export default function checkPermissions (options = {}) {
 
     // Normalize permissions. They can either be a
     // comma separated string or an array.
-    // NOTE (EK): May need to support joins on SQL tables to make
-    // this more efficient in the future.
+    // TODO (EK): May need to support joins on SQL tables
     if (typeof permissions === 'string') {
       permissions = permissions.split(',');
     }
@@ -75,30 +66,18 @@ export default function checkPermissions (options = {}) {
 
     let requiredPermissions = [
       '*',
+      `${options.namespace}`,
+      `${options.namespace}:*`,
       `*:${method}`,
-      `*:${method}:*`
+      `${options.namespace}:${method}`
     ];
 
-    namespaces.forEach(namespace => {
-      let perms = [
-        `${namespace}`,
-        `${namespace}:*`,
-        `${namespace}:*:*`,
-        `${namespace}:${method}`,
-        `${namespace}:${method}:*`
-      ];
-
-      // If we are requesting a resource with an ID add those
-      // as permissions checks.
-      if (!!id || id === 0) {
-        perms = permissions.concat([
-          `${namespace}:*:${id}`,
-          `${namespace}:${method}:${id}`
-        ]);
-      }
-
-      requiredPermissions = requiredPermissions.concat(perms);
-    });
+    if (!!id || id === 0) {
+      requiredPermissions = requiredPermissions.concat([
+        `${options.namespace}:*:${id}`,
+        `${options.namespace}:${method}:${id}`
+      ]);
+    }
 
     debug(`Required Permissions`, requiredPermissions);
 

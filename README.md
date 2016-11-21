@@ -23,9 +23,7 @@ npm install feathers-permissions --save
 
 Feathers permissions allows you to grant and manage permissions in a flexible nature. Each object that requires permissions must have an array or a comma separated string of permissions stored on it (typically in your database). It typically goes hand in hand with [feathers-authentication]().
 
-### Array Example
-
-## Complete Example
+## Usage With Feathers + Feathers Authentication
 
 Here's an example of a Feathers server that uses `feathers-permissions`.
 
@@ -61,6 +59,56 @@ app.listen(3030);
 console.log('Feathers app started on 127.0.0.1:3030');
 ```
 
+
+## Usage With Feathers + Passport
+
+```
+```
+
+## Usage With Express + Passport
+_This is assuming you are not using sockets._
+
+```js
+// app
+const express = require('express');
+const bodyParser = require('body-parser');
+const errorHandler = require('feathers-errors/handler');
+const notFound = require('feathers-errors/not-found');
+const middleware = require('feathers-permissions').middleware;
+const passport = require('passport');
+const local = require('passport-local');
+
+// Initialize the application
+const app = express()
+  // Needed for parsing bodies (login)
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true }));
+
+app.get('login', (req, res, next) => {
+
+});
+
+app.post('login', (req, res, next) => {
+
+});
+
+const options = {
+    permissions: ['admin', 'superadmin'],
+    on: 'user',
+    field: 'role'
+};
+
+app.get('/protected', middleware.checkPermissions(options), middleware.isPermitted, (req, res, next) => {
+    
+});
+
+app.use(notFound());
+app.use(errorHandler());
+
+app.listen(3030);
+
+console.log('Express app started on 127.0.0.1:3030');
+```
 
 ## License
 

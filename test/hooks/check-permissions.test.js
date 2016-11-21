@@ -19,7 +19,7 @@ describe('hooks:checkPermissions', () => {
     };
   });
 
-  describe('when namespace is missing', () => {
+  describe('when namespaces is missing', () => {
     it('returns an error', () => {
       return checkPermissions()(hook).catch(error => {
         expect(error).to.not.equal(undefined);
@@ -29,7 +29,7 @@ describe('hooks:checkPermissions', () => {
 
   describe('when on is missing', () => {
     it('returns an error', () => {
-      const options = { namespace: 'users' };
+      const options = { service: 'users', on: null };
       return checkPermissions(options)(hook).catch(error => {
         expect(error).to.not.equal(undefined);
       });
@@ -38,7 +38,7 @@ describe('hooks:checkPermissions', () => {
 
   describe('when field is missing', () => {
     it('returns an error', () => {
-      const options = { namespace: 'users', on: 'user' };
+      const options = { service: 'users', field: null };
       return checkPermissions(options)(hook).catch(error => {
         expect(error).to.not.equal(undefined);
       });
@@ -57,7 +57,7 @@ describe('hooks:checkPermissions', () => {
   describe('when correct options are provided', () => {
     let options;
     beforeEach(() => {
-      options = { namespace: 'users', on: 'user', field: 'permissions' };
+      options = { service: 'users' };
     });
 
     describe('when not params.provider is missing', () => {
@@ -106,10 +106,10 @@ describe('hooks:checkPermissions', () => {
           });
         });
 
-        describe('when entity has matched permission', () => {
+        describe('when entity has matched group permission', () => {
           it('sets hook.params.permitted', () => {
             hook.params.user.permissions = ['admin'];
-            options.namespace = 'admin';
+            options.group = 'admin';
             return checkPermissions(options)(hook).then(hook => {
               expect(hook.params.permitted).to.equal(true);
             });
