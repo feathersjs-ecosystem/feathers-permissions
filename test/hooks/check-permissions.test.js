@@ -110,6 +110,18 @@ describe('hooks:checkPermissions', () => {
           it('sets hook.params.permitted', () => {
             hook.params.user.permissions = ['admin'];
             options.group = 'admin';
+            delete options.service;
+            return checkPermissions(options)(hook).then(hook => {
+              expect(hook.params.permitted).to.equal(true);
+            });
+          });
+        });
+        describe('when entity has matched role permission', () => {
+          it('sets hook.params.permitted', () => {
+            hook.params.user.role = 'admin';
+            options.field = 'role';
+            options.roles = ['admin'];
+            delete options.service;
             return checkPermissions(options)(hook).then(hook => {
               expect(hook.params.permitted).to.equal(true);
             });
