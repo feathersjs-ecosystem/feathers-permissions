@@ -101,8 +101,8 @@ export default function checkPermissions (options = {}) {
     });
 
     debug(`Required Permissions`, requiredPermissions);
-
-    hook.params.permitted = permissions.some(permission => requiredPermissions.includes(permission));
+    const permitted = permissions.some(permission => requiredPermissions.includes(permission));
+    Object.defineProperty(hook.params, '__isPermitted', { value: permitted });
 
     return Promise.resolve(hook);
   };

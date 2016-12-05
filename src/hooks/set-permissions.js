@@ -4,7 +4,7 @@
 
 import Debug from 'debug';
 
-const debug = Debug('feathers-permissions:hooks:check-permissions');
+const debug = Debug('feathers-permissions:hooks:set-permissions');
 
 // Permissions take the form of
 // * - all services, all methods, all docs
