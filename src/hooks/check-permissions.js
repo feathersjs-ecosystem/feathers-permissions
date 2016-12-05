@@ -91,7 +91,7 @@ export default function checkPermissions (options = {}) {
       // If we are requesting a resource with an ID add those
       // as permissions checks.
       if (!!id || id === 0) {
-        perms = permissions.concat([
+        perms = perms.concat([
           `${namespace}:*:${id}`,
           `${namespace}:${method}:${id}`
         ]);
