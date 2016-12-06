@@ -2,87 +2,70 @@
  * A hook to programmatically set permissions on a resource
  */
 
+import { checkContext, getItems, replaceItems } from 'feathers-hooks-common/lib/utils';
 import Debug from 'debug';
 
 const debug = Debug('feathers-permissions:hooks:set-permissions');
+const defaults = {
+  field: 'permissions',
+  self: true,
+  asArray: true
+};
 
-// Permissions take the form of
-// * - all services, all methods, all docs
-// users:* - all methods on users service
-// users:remove:* - can remove any user
-// *:remove - can remove on any service
-// users:remove:1234 - can only remove user with id 1234
-// users:*:1234 - can call any service method for user with id 1234
+const populatePermissions = function (item, options, id) {
+  // Handle permissions like users:remove:id and
+  // replace id with the actual resource id.
+  let permissions = options.permissions;
+
+  if (options.self) {
+    permissions = permissions.map(permission => {
+      if (id !== undefined && permission.includes(':id')) {
+        permission = permission.replace(':id', `:${id}`);
+      }
+
+      return permission;
+    });
+  }
+
+  item[options.field] = options.asArray ? permissions : permissions.join(',');
+
+  debug(`Setting permissions on field '${options.field}'`, item[options.field]);
+
+  return item;
+};
 
 export default function setPermissions (options = {}) {
+  options = Object.assign({}, defaults, options);
+
+  if (!Array.isArray(options.permissions)) {
+    return Promise.reject(new Error(`options.permissions must be an array of string permissions provided to setPermissions`));
+  }
+
   return function (hook) {
-    if (hook.type !== 'before') {
-      return Promise.reject(new Error(`The 'setPermissions' hook should only be used as a 'before' hook.`));
+    try {
+      checkContext(hook, null, ['create', 'patch', 'update'], 'setPermissions');
+    } catch (error) {
+      return Promise.reject(error);
     }
 
-    // If it is an internal call then skip this hook
-    if (!hook.params.provider) {
+    const service = this;
+    let items = getItems(hook);
+    items = Array.isArray(items) ? items.map(item => populatePermissions(item, options, hook.id || item[service.id])) : populatePermissions(items, options, hook.id || items[service.id]);
+    replaceItems(hook, items);
+
+    if (hook.type === 'before') {
       return Promise.resolve(hook);
     }
 
-    options = Object.assign({}, options);
+    if (hook.type === 'after') {
+      // Update entity with new permissions in the DB
+      items = Array.isArray(items) ? items : [items];
+      const promises = items.map(item => service.update(hook.id || item[service.id], item));
 
-    debug('Running setPermissions hook with options:', options);
-
-    if (!options.namespace) {
-      return Promise.reject(new Error(`'namespace' must be provided to the setPermissions() hook.`));
+      // TODO (EK): Handle if an update fails in the middle of updating
+      // a bunch of records. Do we roll back? We likely should be using better
+      // async flow control here.
+      return Promise.all(promises).then(() => Promise.resolve(hook));
     }
-
-    if (!options.on) {
-      return Promise.reject(new Error(`'on' must be provided to the setPermissions() hook.`));
-    }
-
-    if (!options.field) {
-      return Promise.reject(new Error(`'field' must be provided to the setPermissions() hook.`));
-    }
-
-    const entity = hook.params[options.on];
-
-    if (!entity) {
-      debug(`hook.params.${options.on} does not exist. If you were expecting it to be defined check your hook order and your idField options in your auth config.`);
-      return Promise.resolve(hook);
-    }
-
-    const id = hook.id;
-    const method = hook.method;
-    let permissions = entity[options.field] || [];
-
-    // Normalize permissions. They can either be a
-    // comma separated string or an array.
-    // TODO (EK): May need to support joins on SQL tables
-    if (typeof permissions === 'string') {
-      permissions = permissions.split(',');
-    }
-
-    if (!permissions.length) {
-      debug(`'${options.field} is missing from '${options.on}' or is empty.`);
-      return Promise.resolve(hook);
-    }
-
-    let requiredPermissions = [
-      '*',
-      `${options.namespace}`,
-      `${options.namespace}:*`,
-      `*:${method}`,
-      `${options.namespace}:${method}`
-    ];
-
-    if (!!id || id === 0) {
-      requiredPermissions = requiredPermissions.concat([
-        `${options.namespace}:*:${id}`,
-        `${options.namespace}:${method}:${id}`
-      ]);
-    }
-
-    debug(`Required Permissions`, requiredPermissions);
-
-    hook.params.permitted = permissions.some(permission => requiredPermissions.includes(permission));
-
-    return Promise.resolve(hook);
   };
 }
