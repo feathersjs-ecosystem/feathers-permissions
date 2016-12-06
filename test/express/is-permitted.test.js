@@ -4,11 +4,11 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import errors from 'feathers-errors';
-import { isPermitted } from '../../src/middleware';
+import { isPermitted } from '../../src/express';
 
 chai.use(sinonChai);
 
-describe('middleware:rest:isPermitted', () => {
+describe('express:isPermitted', () => {
   let req;
   let res;
   let next;
@@ -27,27 +27,29 @@ describe('middleware:rest:isPermitted', () => {
 
   describe('when not permitted', () => {
     it('calls next with a new error', () => {
-      isPermitted(req, res, next);
+      isPermitted()(req, res, next);
       expect(next).to.have.been.calledOnce;
       expect(next).to.have.been.calledWith(new errors.Forbidden('You do not have the correct permissions.'));
     });
   });
 
   describe('when req.permitted', () => {
-    before(() => { req.permitted = true; });
+    beforeEach(() => { req.__isPermitted = true; });
 
     it('calls next', () => {
-      isPermitted(req, res, next);
+      isPermitted()(req, res, next);
       expect(next).to.have.been.calledOnce;
+      expect(next).to.have.been.calledWithExactly();
     });
   });
 
   describe('when req.feathers.permitted', () => {
-    before(() => { req.permitted = true; });
+    beforeEach(() => { req.__isPermitted = true; });
 
     it('calls next', () => {
-      isPermitted(req, res, next);
+      isPermitted()(req, res, next);
       expect(next).to.have.been.calledOnce;
+      expect(next).to.have.been.calledWithExactly();
     });
   });
 });
