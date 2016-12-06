@@ -27,9 +27,9 @@ describe('hooks:checkPermissions', () => {
     });
   });
 
-  describe('when on is missing', () => {
+  describe('when entity is missing', () => {
     it('returns an error', () => {
-      const options = { service: 'users', on: null };
+      const options = { service: 'users', entity: null };
       return checkPermissions(options)(hook).catch(error => {
         expect(error).to.not.equal(undefined);
       });
@@ -71,7 +71,7 @@ describe('hooks:checkPermissions', () => {
 
     describe('when entities to check are missing', () => {
       it('does nothing', () => {
-        options.on = 'device';
+        options.entity = 'device';
         return checkPermissions(options)(hook).then(returnedHook => {
           expect(returnedHook).to.deep.equal(hook);
         });
