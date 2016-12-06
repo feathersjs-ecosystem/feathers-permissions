@@ -4,11 +4,11 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 // import errors from 'feathers-errors';
-import { checkPermissions } from '../../src/middleware';
+import { checkPermissions } from '../../src/express';
 
 chai.use(sinonChai);
 
-describe('middleware:rest:checkPermissions', () => {
+describe('express:checkPermissions', () => {
   let req;
   let res;
   let next;

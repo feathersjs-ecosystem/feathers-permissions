@@ -8,7 +8,7 @@ export default function isPermitted () {
       return Promise.reject(new Error(`The 'isPermitted' hook should only be used as a 'before' hook.`));
     }
 
-    if (hook.params.provider && !hook.params.permitted) {
+    if (hook.params.provider && !hook.params.__isPermitted) {
       return Promise.reject(new errors.Forbidden('You do not have the correct permissions.'));
     }
 

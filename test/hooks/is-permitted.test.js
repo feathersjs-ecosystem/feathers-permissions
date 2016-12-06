@@ -37,7 +37,7 @@ describe('hooks:isPermitted', () => {
   describe('when provider exists', () => {
     describe('when permitted', () => {
       it('does nothing', () => {
-        hook.params.permitted = true;
+        hook.params.__isPermitted = true;
 
         return isPermitted()(hook).then(returnedHook => {
           expect(returnedHook).to.deep.equal(hook);

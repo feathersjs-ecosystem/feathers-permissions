@@ -11,8 +11,6 @@ const debug = Debug('feathers-permissions:hooks:check-permissions');
 // users:*:1234 - can call any service method for user with id 1234
 
 export default function checkPermissions (options = {}) {
-  // TODO (EK): Support `options.service` and `options.group` and normalize
-  // them to options.namespace internally here
   return function (hook) {
     if (hook.type !== 'before') {
       return Promise.reject(new Error(`The 'checkPermissions' hook should only be used as a 'before' hook.`));
@@ -23,7 +21,7 @@ export default function checkPermissions (options = {}) {
       return Promise.resolve(hook);
     }
 
-    options = Object.assign({ on: 'user', field: 'permissions' }, options);
+    options = Object.assign({ entity: 'user', field: 'permissions' }, options);
 
     let namespaces;
 
@@ -38,21 +36,21 @@ export default function checkPermissions (options = {}) {
     debug('Running checkPermissions hook with options:', options);
 
     if (!namespaces) {
-      return Promise.reject(new Error(`'service' or 'group' must be provided to the checkPermissions() hook.`));
+      return Promise.reject(new Error(`'service', 'group' or 'roles' must be provided to the checkPermissions() hook.`));
     }
 
-    if (!options.on) {
-      return Promise.reject(new Error(`'on' must be provided to the checkPermissions() hook.`));
+    if (!options.entity) {
+      return Promise.reject(new Error(`'entity' must be provided to the checkPermissions() hook.`));
     }
 
     if (!options.field) {
       return Promise.reject(new Error(`'field' must be provided to the checkPermissions() hook.`));
     }
 
-    const entity = hook.params[options.on];
+    const entity = hook.params[options.entity];
 
     if (!entity) {
-      debug(`hook.params.${options.on} does not exist. If you were expecting it to be defined check your hook order and your idField options in your auth config.`);
+      debug(`hook.params.${options.entity} does not exist. If you were expecting it to be defined check your hook order and your idField options in your auth config.`);
       return Promise.resolve(hook);
     }
 
@@ -69,7 +67,7 @@ export default function checkPermissions (options = {}) {
     }
 
     if (!permissions.length) {
-      debug(`'${options.field} is missing from '${options.on}' or is empty.`);
+      debug(`'${options.field} is missing from '${options.entity}' or is empty.`);
       return Promise.resolve(hook);
     }
 
@@ -101,8 +99,8 @@ export default function checkPermissions (options = {}) {
     });
 
     debug(`Required Permissions`, requiredPermissions);
-
-    hook.params.permitted = permissions.some(permission => requiredPermissions.includes(permission));
+    const permitted = permissions.some(permission => requiredPermissions.includes(permission));
+    Object.defineProperty(hook.params, '__isPermitted', { value: permitted });
 
     return Promise.resolve(hook);
   };

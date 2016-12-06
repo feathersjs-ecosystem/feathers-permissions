@@ -1,6 +1,6 @@
 import Debug from 'debug';
 
-const debug = Debug('feathers-permissions:middleware:check-permissions');
+const debug = Debug('feathers-permissions:express:check-permissions');
 
 export default function checkPermissions (options = {}) {
   debug('Registering checkPermissions middleware');

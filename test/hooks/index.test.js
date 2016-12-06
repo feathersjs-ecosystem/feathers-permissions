@@ -17,4 +17,8 @@ describe('hooks', () => {
   it('exposes checkPermissions hook', () => {
     expect(typeof hooks.checkPermissions).to.equal('function');
   });
+
+  it('exposes setPermissions hook', () => {
+    expect(typeof hooks.setPermissions).to.equal('function');
+  });
 });
