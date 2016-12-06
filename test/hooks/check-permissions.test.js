@@ -112,7 +112,7 @@ describe('hooks:checkPermissions', () => {
             options.group = 'admin';
             delete options.service;
             return checkPermissions(options)(hook).then(hook => {
-              expect(hook.params.permitted).to.equal(true);
+              expect(hook.params.__isPermitted).to.equal(true);
             });
           });
         });

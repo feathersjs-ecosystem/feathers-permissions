@@ -2,10 +2,10 @@ if(!global._babelPolyfill) { require('babel-polyfill'); }
 
 /*jshint expr: true*/
 
-import permissions, { middleware, hooks } from '../src';
+import permissions, { express, hooks, filters } from '../src';
 import { expect } from 'chai';
 
-describe('Feathers Authentication', () => {
+describe('Feathers Permissions', () => {
   it('is CommonJS compatible', () => {
     expect(typeof require('../lib')).to.equal('object');
   });
@@ -18,7 +18,11 @@ describe('Feathers Authentication', () => {
     expect(typeof hooks).to.equal('object');
   });
 
-  it('exposes middleware', () => {
-    expect(typeof middleware).to.equal('object');
+  it('exposes express middleware', () => {
+    expect(typeof express).to.equal('object');
+  });
+
+  it('exposes filters', () => {
+    expect(typeof filters).to.equal('object');
   });
 });
