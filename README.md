@@ -9,7 +9,7 @@
 
 > Flexible and powerful permissions module for Feathers
 
-**This module is not published yet. It's awaiting one more breaking change and then will go out by Nov. 21st. If you are feeling adventurous you can use by referencing `feathersjs/feathers-permission` in your `package.json`.**
+**This module is not published yet. It's awaiting one more breaking change and then will go out. If you are feeling adventurous you can use by referencing `feathersjs/feathers-permission` in your `package.json`.**
 
 ## Installation
 
