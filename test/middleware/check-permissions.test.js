@@ -1,9 +1,8 @@
-/* jshint expr: true */
+/* eslint-disable no-unused-expressions */
 
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-// import errors from 'feathers-errors';
 import { checkPermissions } from '../../src/middleware';
 
 chai.use(sinonChai);
