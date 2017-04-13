@@ -1,4 +1,4 @@
-/* jshint expr: true */
+/* eslint-disable no-unused-expressions */
 
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
