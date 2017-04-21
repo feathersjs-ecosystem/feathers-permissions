@@ -11,6 +11,7 @@ describe('hooks:checkPermissions', () => {
       id: 1,
       type: 'before',
       method: 'get',
+      path: 'somepath',
       app: {
         get: () => {}
       },
