@@ -33,6 +33,8 @@ export default function checkPermissions (options = {}) {
       namespaces = [options.group];
     } else if (options.roles) {
       namespaces = options.roles;
+    } else if (hook.path && options.globalHook) {
+      namespaces = [hook.path];
     }
 
     debug('Running checkPermissions hook with options:', options);
