@@ -15,12 +15,76 @@
 npm install feathers-permissions --save
 ```
 
+## Example
+
+```js
+const feathers = require('@feathersjs/feathers');
+const memory = require('feathers-memory');
+const checkPermissions = require('feathers-permissions');
+const app = feathers();
+
+app.use('/messages', memory());
+
+app.service('messages').hooks({
+  before: checkPermissions({
+    roles: [ 'admin', 'user' ]
+  })
+});
+
+// User from the database (e.g. added via @feathersjs/authentication)
+const user = {
+  email: 'someuser@example.com',
+  permissions: [ 'user:find', 'user:get' ]
+  // Also possible
+  permissions: 'user:find,user:get'
+}
+
+// Will pass
+app.service('messages').find({
+  provider: 'rest', // this will be set automatically by external calls
+  user
+});
+
+// Will fail
+app.service('messages').create({
+  provider: 'rest', // this will be set automatically by external calls
+  user
+});
+```
+
 ## Documentation
 
-<!-- Please refer to the [feathers-permissions documentation](http://docs.feathersjs.com/) for more details. -->
+Feathers permissions allows you to grant and manage permissions in a flexible nature. Each object that requires permissions must have an array or a comma separated string of permissions stored on it (typically in your database).
 
-Feathers permissions allows you to grant and manage permissions in a flexible nature. Each object that requires permissions must have an array or a comma separated string of permissions stored on it (typically in your database). It typically goes hand in hand with [feathers-authentication]().
+### Options
 
+The following options are available:
+
+- `roles` - A list of roles to check
+- `entity` (default: `user`) - The name of the entity (`params[entity]`)
+- `field` (default: `permissions`) - The name of the permissions field.
+- `error` - If set to `false` will not throw a `Forbidden` error but instead set `params.permitted` to `true` or `false`. Useful for chaining permission hooks.
+
+### Permission format
+
+The list of permissions will be obtained from `params[entity][field]`. It can be a comma separate list or an array of permissions in the following format:
+
+- `*` - Allow everything
+- `${role}:*` - Allo every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `role`
+- `*:${method}` - Allow `method` service method for any role
+- `${role}:${method}` - Allow `method` service method for `role`
+
+This means the following use of `feathers-permissions`:
+
+```js
+app.service('messages').hooks({
+  before: checkPermissions({
+    roles: [ 'admin', 'user' ]
+  })
+});
+```
+
+Will allow user `permissions` containing `*`, `admin:*`, `user:*` and the service method that is being called (e.g. `admin:create` or `user:find` and `*:create` and `*:find`).
 
 ## License
 
