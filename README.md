@@ -27,16 +27,21 @@ app.use('/messages', memory());
 
 app.service('messages').hooks({
   before: checkPermissions({
-    roles: [ 'admin', 'user' ]
+    roles: [ 'admin', 'messages' ]
   })
 });
 
 // User from the database (e.g. added via @feathersjs/authentication)
 const user = {
   email: 'someuser@example.com',
-  permissions: [ 'user:find', 'user:get' ]
+  permissions: [ 'messages:find', 'messages:get' ]
   // Also possible
-  permissions: 'user:find,user:get'
+  permissions: 'messages:find,messages:get'
+}
+
+const admin = {
+  email: 'someuser@example.com',
+  permissions: [ 'admin:*' ]
 }
 
 // Will pass
@@ -50,6 +55,12 @@ app.service('messages').create({
   provider: 'rest', // this will be set automatically by external calls
   user
 });
+
+// Will pass
+app.service('messages').create({
+  provider: 'rest', // this will be set automatically by external calls
+  user: admin
+});
 ```
 
 ## Documentation
@@ -62,7 +73,7 @@ The following options are available:
 
 - `roles` - A list of roles to check
 - `entity` (default: `user`) - The name of the entity (`params[entity]`)
-- `field` (default: `permissions`) - The name of the permissions field.
+- `field` (default: `permissions`) - The name of the permissions field. Can be a comma separated string of permissions or an array or permissions.
 - `error` - If set to `false` will not throw a `Forbidden` error but instead set `params.permitted` to `true` or `false`. Useful for chaining permission hooks.
 
 ### Permission format
