@@ -1,19 +1,31 @@
 # Change Log
 
-## [Unreleased](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/HEAD)
-
-[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v0.1.1...HEAD)
+## [v0.2.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v0.2.0) (2018-04-26)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v0.1.1...v0.2.0)
 
 **Closed issues:**
 
+-  The documentation link is not available [\#32](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/32)
+- Status of this module [\#27](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/27)
+- \[api enhancement\] checkPermissions could omit service option [\#23](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/23)
 - `setPermissions` isn't registered  in `index.js` [\#20](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/20)
 - No file naming conventions [\#19](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/19)
+- Example isn't valid JavaScript [\#18](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/18)
+- setPermissions hook is not persisting the user permissions [\#17](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/17)
+- SetPermissions is not working correctly when used as a before create hook [\#16](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/16)
+- Mismatching permissions and requiredPermissions comparison [\#15](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/15)
 - README says this "will go out by Nov. 21st." [\#14](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/14)
 - Suggestion: Client Library [\#13](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/13)
+- `setPermissions` not available? [\#12](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/12)
 - Subtractive permission [\#9](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/9)
+- any more detailed docs or examples? [\#5](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/5)
+- Implement setPermissions hook [\#3](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/3)
+- Implement checkPermissions express middleware [\#2](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/2)
 
 **Merged pull requests:**
 
+- Finalize implementation of simplified version of the plugin [\#34](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/34) ([daffl](https://github.com/daffl))
+- Update dependencies to enable Greenkeeper 🌴 [\#33](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/33) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
 - Update mocha to the latest version 🚀 [\#31](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/31) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
 - Update debug to the latest version 🚀 [\#30](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/30) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
 - Update chai to the latest version 🚀 [\#29](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/29) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
