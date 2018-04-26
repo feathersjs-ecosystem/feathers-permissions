@@ -7,13 +7,17 @@
 [![Download Status](https://img.shields.io/npm/dm/feathers-permissions.svg?style=flat-square)](https://www.npmjs.com/package/feathers-permissions)
 [![Slack Status](http://slack.feathersjs.com/badge.svg)](http://slack.feathersjs.com)
 
-> Flexible permissions module for Feathers
+> Simple role and service method permissions for Feathers
+
+> __Note:__ This module implements a hook simple role and service method based permissions checked against the permissions in a user (entity) object. More complex requirements can already be implemented as [custom Feathers hooks](https://docs.feathersjs.com/api/hooks.html). See [here](https://blog.feathersjs.com/access-control-strategies-with-feathersjs-72452268739d) and [here](https://blog.feathersjs.com/authorization-with-casl-in-feathersjs-app-fd6e24eefbff) for more information.
 
 ## Installation
 
 ```
 npm install feathers-permissions --save
 ```
+
+> __Important:__ The `feathers-permissions` hook should be used after the `authenticate()` hook by [@feathersjs/authentication](https://docs.feathersjs.com/api/authentication/server.html#authhooksauthenticatestrategies).
 
 ## Example
 
