@@ -1,17 +1,15 @@
 # feathers-permissions
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs/feathers-permissions.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs-ecosystem/feathers-permissions.svg)](https://greenkeeper.io/)
 
-[![Build Status](https://travis-ci.org/feathersjs/feathers-permissions.png?branch=master)](https://travis-ci.org/feathersjs/feathers-permissions)
-[![Code Climate](https://codeclimate.com/github/feathersjs/feathers-permissions/badges/gpa.svg)](https://codeclimate.com/github/feathersjs/feathers-permissions)
-[![Test Coverage](https://codeclimate.com/github/feathersjs/feathers-permissions/badges/coverage.svg)](https://codeclimate.com/github/feathersjs/feathers-permissions/coverage)
-[![Dependency Status](https://img.shields.io/david/feathersjs/feathers-permissions.svg?style=flat-square)](https://david-dm.org/feathersjs/feathers-permissions)
+[![Build Status](https://travis-ci.org/feathersjs-ecosystem/feathers-permissions.png?branch=master)](https://travis-ci.org/feathersjs-ecosystem/feathers-permissions)
+[![Dependency Status](https://img.shields.io/david/feathersjs-ecosystem/feathers-permissions.svg?style=flat-square)](https://david-dm.org/feathersjs-ecosystem/feathers-permissions)
 [![Download Status](https://img.shields.io/npm/dm/feathers-permissions.svg?style=flat-square)](https://www.npmjs.com/package/feathers-permissions)
 [![Slack Status](http://slack.feathersjs.com/badge.svg)](http://slack.feathersjs.com)
 
-> Flexible and powerful permissions module for Feathers
+> Simple role and service method permissions for Feathers
 
-**This module is not published yet. It's awaiting one more breaking change and then will go out. If you are feeling adventurous you can use by referencing `feathersjs/feathers-permission` in your `package.json`.**
+> __Note:__ This module implements a hook simple role and service method based permissions checked against the permissions in a user (entity) object. More complex requirements can already be implemented as [custom Feathers hooks](https://docs.feathersjs.com/api/hooks.html). See [here](https://blog.feathersjs.com/access-control-strategies-with-feathersjs-72452268739d) and [here](https://blog.feathersjs.com/authorization-with-casl-in-feathersjs-app-fd6e24eefbff) for more information.
 
 ## Installation
 
@@ -19,101 +17,92 @@
 npm install feathers-permissions --save
 ```
 
+> __Important:__ The `feathers-permissions` hook should be used after the `authenticate()` hook by [@feathersjs/authentication](https://docs.feathersjs.com/api/authentication/server.html#authhooksauthenticatestrategies).
+
+## Example
+
+```js
+const feathers = require('@feathersjs/feathers');
+const memory = require('feathers-memory');
+const checkPermissions = require('feathers-permissions');
+const app = feathers();
+
+app.use('/messages', memory());
+
+app.service('messages').hooks({
+  before: checkPermissions({
+    roles: [ 'admin', 'messages' ]
+  })
+});
+
+// User from the database (e.g. added via @feathersjs/authentication)
+const user = {
+  email: 'someuser@example.com',
+  permissions: [ 'messages:find', 'messages:get' ]
+  // Also possible
+  permissions: 'messages:find,messages:get'
+}
+
+const admin = {
+  email: 'someuser@example.com',
+  permissions: [ 'admin:*' ]
+}
+
+// Will pass
+app.service('messages').find({
+  provider: 'rest', // this will be set automatically by external calls
+  user
+});
+
+// Will fail
+app.service('messages').create({
+  provider: 'rest', // this will be set automatically by external calls
+  user
+});
+
+// Will pass
+app.service('messages').create({
+  provider: 'rest', // this will be set automatically by external calls
+  user: admin
+});
+```
+
 ## Documentation
 
-<!-- Please refer to the [feathers-permissions documentation](http://docs.feathersjs.com/) for more details. -->
+Feathers permissions allows you to grant and manage permissions in a flexible nature. Each object that requires permissions must have an array or a comma separated string of permissions stored on it (typically in your database).
 
-Feathers permissions allows you to grant and manage permissions in a flexible nature. Each object that requires permissions must have an array or a comma separated string of permissions stored on it (typically in your database). It typically goes hand in hand with [feathers-authentication]().
+### Options
 
-## Usage With Feathers + Feathers Authentication
+The following options are available:
 
-Here's an example of a Feathers server that uses `feathers-permissions`.
+- `roles` - A list of roles to check
+- `entity` (default: `user`) - The name of the entity (`params[entity]`)
+- `field` (default: `permissions`) - The name of the permissions field. Can be a comma separated string of permissions or an array or permissions.
+- `error` - If set to `false` will not throw a `Forbidden` error but instead set `params.permitted` to `true` or `false`. Useful for chaining permission hooks.
 
+### Permission format
 
-```js
-// app
-const feathers = require('feathers');
-const rest = require('feathers-rest');
-const hooks = require('feathers-hooks');
-const bodyParser = require('body-parser');
-const errorHandler = require('feathers-errors/handler');
-const hooks = require('feathers-permissions').hooks;
-const middleware = require('feathers-permissions').middleware;
-const memory = require('feathers-memory');
+The list of permissions will be obtained from `params[entity][field]`. It can be a comma separate list or an array of permissions in the following format:
 
-// Initialize the application
-const app = feathers()
-  .configure(rest())
-  .configure(hooks())
-  // Needed for parsing bodies (login)
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({ extended: true }))
-  // Initialize your feathers plugin
-  .use('/users', memory())
-  .use(errorHandler());
+- `*` - Allow everything
+- `${role}:*` - Allo every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `role`
+- `*:${method}` - Allow `method` service method for any role
+- `${role}:${method}` - Allow `method` service method for `role`
 
-app.service('users').before({
-
-});
-
-app.listen(3030);
-
-console.log('Feathers app started on 127.0.0.1:3030');
-```
-
-
-## Usage With Feathers + Passport
-
-```
-```
-
-## Usage With Express + Passport
-_This is assuming you are not using sockets._
+This means the following use of `feathers-permissions`:
 
 ```js
-// app
-const express = require('express');
-const bodyParser = require('body-parser');
-const errorHandler = require('feathers-errors/handler');
-const notFound = require('feathers-errors/not-found');
-const middleware = require('feathers-permissions').middleware;
-const passport = require('passport');
-const local = require('passport-local');
-
-// Initialize the application
-const app = express()
-  // Needed for parsing bodies (login)
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({ extended: true }));
-
-app.get('login', (req, res, next) => {
-
+app.service('messages').hooks({
+  before: checkPermissions({
+    roles: [ 'admin', 'user' ]
+  })
 });
-
-app.post('login', (req, res, next) => {
-
-});
-
-const options = {
-    permissions: ['admin', 'superadmin'],
-    on: 'user',
-    field: 'role'
-};
-
-app.get('/protected', middleware.checkPermissions(options), middleware.isPermitted, (req, res, next) => {
-    
-});
-
-app.use(notFound());
-app.use(errorHandler());
-
-app.listen(3030);
-
-console.log('Express app started on 127.0.0.1:3030');
 ```
+
+Will allow user `permissions` containing `*`, `admin:*`, `user:*` and the service method that is being called (e.g. `admin:create` or `user:find` and `*:create` and `*:find`).
 
 ## License
 
-Copyright (c) 2016
+Copyright (c) 2018
 
 Licensed under the [MIT license](LICENSE).
