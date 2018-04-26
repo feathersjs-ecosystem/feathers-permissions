@@ -1,6 +1,7 @@
-import errors from 'feathers-errors';
-import { expect } from 'chai';
-import { isPermitted } from '../../src/hooks';
+const errors = require('feathers-errors');
+
+const { expect } = require('chai');
+const { isPermitted } = require('../lib');
 
 describe('hooks:isPermitted', () => {
   let hook;

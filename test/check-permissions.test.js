@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-expressions */
+const { expect } = require('chai');
 
-import { expect } from 'chai';
-import { checkPermissions } from '../../src/hooks';
+const { checkPermissions } = require('../lib');
 
 describe('hooks:checkPermissions', () => {
   let hook;
