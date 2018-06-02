@@ -176,8 +176,7 @@ describe('feathers-permissions integration tests', () => {
       app = feathers();
       app.hooks({
         before: checkPermissions({
-          roles: ['admin'],
-          pathAsRole: true
+          roles: (context) => ['admin', context.path]
         })
       });
       app.use('/messages', memory());
