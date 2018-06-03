@@ -75,7 +75,7 @@ Feathers permissions allows you to grant and manage permissions in a flexible na
 
 The following options are available:
 
-- `roles` - A list of roles to check
+- `roles` - A list of roles to check or a function that takes the hook `context` and returns a list of roles
 - `entity` (default: `user`) - The name of the entity (`params[entity]`)
 - `field` (default: `permissions`) - The name of the permissions field. Can be a comma separated string of permissions or an array or permissions.
 - `error` - If set to `false` will not throw a `Forbidden` error but instead set `params.permitted` to `true` or `false`. Useful for chaining permission hooks.
@@ -100,6 +100,37 @@ app.service('messages').hooks({
 ```
 
 Will allow user `permissions` containing `*`, `admin:*`, `user:*` and the service method that is being called (e.g. `admin:create` or `user:find` and `*:create` and `*:find`).
+
+The following will create a dynamic role based on the hook [`context.path`](https://docs.feathersjs.com/api/hooks.html#contextpath):
+
+```js
+app.service('messages').hooks({
+  before: checkPermissions({
+    roles(context) {
+      return [ 'admin', context.path ];
+    }
+  })
+});
+```
+
+Roles can also be assembled asynchronously:
+
+```js
+app.service('messages').hooks({
+  before: checkPermissions({
+    async roles(context) {
+      const { user } = context.params;
+      const roles = await app.service('roles').find({
+        query: {
+          userId: user._id
+        }
+      });
+
+      return roles.data;
+    }
+  })
+});
+```
 
 ## License
 
