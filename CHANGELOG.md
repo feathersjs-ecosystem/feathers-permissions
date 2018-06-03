@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.2.1](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v0.2.1) (2018-06-03)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v0.2.0...v0.2.1)
+
+**Closed issues:**
+
+- Allow user to modify his own data [\#35](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/35)
+
+**Merged pull requests:**
+
+- Allow support for asynchronous roles functions and add documentation [\#37](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/37) ([daffl](https://github.com/daffl))
+- Add dynamic role option [\#36](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/36) ([MichaelErmer](https://github.com/MichaelErmer))
+
 ## [v0.2.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v0.2.0) (2018-04-26)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v0.1.1...v0.2.0)
 
