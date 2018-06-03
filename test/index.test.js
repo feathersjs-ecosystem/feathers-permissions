@@ -171,12 +171,14 @@ describe('feathers-permissions integration tests', () => {
     });
   });
 
-  describe('with "pathAsRole"', () => {
+  describe('with `roles` as function', () => {
     beforeEach(() => {
       app = feathers();
       app.hooks({
         before: checkPermissions({
-          roles: (context) => ['admin', context.path]
+          roles (context) {
+            return Promise.resolve(['admin', context.path]);
+          }
         })
       });
       app.use('/messages', memory());
