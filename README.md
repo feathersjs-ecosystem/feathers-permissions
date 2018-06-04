@@ -85,7 +85,7 @@ The following options are available:
 The list of permissions will be obtained from `params[entity][field]`. It can be a comma separate list or an array of permissions in the following format:
 
 - `*` - Allow everything
-- `${role}:*` - Allo every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `role`
+- `${role}:*` - Allow every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `role`
 - `*:${method}` - Allow `method` service method for any role
 - `${role}:${method}` - Allow `method` service method for `role`
 
