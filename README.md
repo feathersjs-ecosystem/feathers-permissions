@@ -132,6 +132,27 @@ app.service('messages').hooks({
 });
 ```
 
+### Conditionally restricting roles
+
+To conditionally either allow access by permission or otherwise restrict to the current user, a combination of `feathers-permissions` - setting the `error` option to `false` - [feathers-authentication-hooks](https://github.com/feathersjs-ecosystem/feathers-authentication-hooks) and [feathers-hooks-common#iff](https://feathers-plus.github.io/v1/feathers-hooks-common/#iff) (checking for `params.permitte`) can be used:
+
+```js
+app.service('messages').hooks({
+  before: {
+    find: [
+      checkPermissions({
+        roles: ['super_admin', 'admin'],
+        field: 'role',
+        error: false
+      }),
+      iff(context => !context.params.permitted,
+        restrictToOwner({ idField: '_id', ownerField: '_id'})
+      )
+    ]
+  }
+});
+```
+
 ## License
 
 Copyright (c) 2018
