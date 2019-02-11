@@ -134,7 +134,7 @@ app.service('messages').hooks({
 
 ### Conditionally restricting roles
 
-To conditionally either allow access by permission or otherwise restrict to the current user, a combination of `feathers-permissions` - setting the `error` option to `false` - [feathers-authentication-hooks](https://github.com/feathersjs-ecosystem/feathers-authentication-hooks) and [feathers-hooks-common#iff](https://feathers-plus.github.io/v1/feathers-hooks-common/#iff) (checking for `params.permitte`) can be used:
+To conditionally either allow access by permission or otherwise restrict to the current user, a combination of `feathers-permissions` - setting the `error` option to `false` - [feathers-authentication-hooks](https://github.com/feathersjs-ecosystem/feathers-authentication-hooks) and [feathers-hooks-common#iff](https://feathers-plus.github.io/v1/feathers-hooks-common/#iff) (checking for `params.permitted`) can be used:
 
 ```js
 app.service('messages').hooks({
