@@ -19,7 +19,32 @@ npm install feathers-permissions --save
 
 > __Important:__ The `feathers-permissions` hook should be used after the `authenticate()` hook by [@feathersjs/authentication](https://docs.feathersjs.com/api/authentication/server.html#authhooksauthenticatestrategies).
 
-## Example
+## Simple example
+
+The following example will limit all `messages` service calls to users that has `admin` in their `permissions`:
+
+```js
+const feathers = require('@feathersjs/feathers');
+const memory = require('feathers-memory');
+const checkPermissions = require('feathers-permissions');
+const app = feathers();
+
+app.use('/messages', memory());
+
+app.service('messages').hooks({
+  before: checkPermissions({
+    roles: [ 'admin' ]
+  })
+});
+
+// User from the database
+const user = {
+  email: 'someuser@example.com',
+  permissions: [ 'admin' ]
+}
+```
+
+## More examples
 
 ```js
 const feathers = require('@feathersjs/feathers');
@@ -85,7 +110,7 @@ The following options are available:
 The list of permissions will be obtained from `params[entity][field]`. It can be a comma separate list or an array of permissions in the following format:
 
 - `*` - Allow everything
-- `${role}:*` - Allow every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `role`
+- `${role}` or `${role}:*` - Allow every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `role`
 - `*:${method}` - Allow `method` service method for any role
 - `${role}:${method}` - Allow `method` service method for `role`
 
