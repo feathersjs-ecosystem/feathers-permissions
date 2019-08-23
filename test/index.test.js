@@ -50,7 +50,7 @@ describe('feathers-permissions integration tests', () => {
           });
       });
 
-      it('sets isPermitted false when entity is available but has no permissions', () => {
+      it('sets isPermitted true when entity is available and has correct permissions', () => {
         const user = {
           email: 'someuser@example.com',
           permissions: ['admin:create']
