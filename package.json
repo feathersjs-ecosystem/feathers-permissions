@@ -1,6 +1,6 @@
 {
   "name": "feathers-permissions",
-  "description": "Flexible and powerful permissions module for Feathers",
+  "description": "Simple permissions module for Feathers",
   "version": "0.2.1",
   "homepage": "https://github.com/feathersjs-ecosystem/feathers-permissions",
   "main": "lib/",
@@ -23,7 +23,7 @@
     "url": "https://github.com/feathersjs-ecosystem/feathers-permissions/issues"
   },
   "engines": {
-    "node": ">= 6"
+    "node": ">= 10"
   },
   "scripts": {
     "publish": "git push origin --tags && npm run changelog && git push origin",
@@ -46,7 +46,8 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@feathersjs/errors": "^4.3.3"
+    "@feathersjs/errors": "^4.3.3",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@feathersjs/feathers": "^4.3.3",
