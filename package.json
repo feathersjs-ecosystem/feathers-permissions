@@ -4,6 +4,7 @@
   "version": "0.2.1",
   "homepage": "https://github.com/feathersjs-ecosystem/feathers-permissions",
   "main": "lib/",
+  "types": "types/",
   "keywords": [
     "feathers",
     "feathers-plugin"
@@ -32,9 +33,10 @@
     "release:major": "npm version major && npm publish",
     "changelog": "github_changelog_generator && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "lint": "semistandard --fix",
+    "dtslint": "dtslint types",
     "mocha": "mocha --opts mocha.opts",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --opts mocha.opts",
-    "test": "npm run lint && npm run coverage",
+    "test": "npm run lint && npm run dtslint && npm run coverage",
     "start": "npm run compile && node example/app"
   },
   "semistandard": {
@@ -51,6 +53,8 @@
   },
   "devDependencies": {
     "@feathersjs/feathers": "^4.3.3",
+    "@types/node": "^12.7.8",
+    "dtslint": "^0.9.8",
     "feathers-memory": "^4.0.1",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^6.2.1",
