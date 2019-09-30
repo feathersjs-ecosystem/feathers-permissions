@@ -7,6 +7,12 @@ const checkPermissions = require('../lib');
 describe('feathers-permissions integration tests', () => {
   let app;
 
+  it('errors when no roles are passed', () => {
+    assert.throws(() => checkPermissions(), {
+      message: '\'roles\' option for feathers-permissions hook must be an array or a function'
+    });
+  });
+
   describe('with predefined roles', () => {
     beforeEach(() => {
       app = feathers();
@@ -17,12 +23,6 @@ describe('feathers-permissions integration tests', () => {
         before: checkPermissions({
           roles: ['messages', 'admin']
         })
-      });
-    });
-
-    it('errors when no roles are passed', () => {
-      assert.throws(() => checkPermissions(), {
-        message: '\'roles\' option for feathers-permissions hook must be an array or a function'
       });
     });
 
@@ -310,6 +310,34 @@ describe('feathers-permissions integration tests', () => {
             };
 
             const result = await app.service('messages').create({ text: 'hello' }, params);
+
+            assert.deepStrictEqual(result, {
+              id: 0,
+              text: 'hello'
+            });
+          });
+
+          it('works with nested field', async () => {
+            const app = feathers();
+            const params = {
+              provider: 'test',
+              user: {
+                email: 'someuser@example.com',
+                deeply: {
+                  nested: ['something:create', permission]
+                }
+              }
+            };
+
+            app.use('/dummy', memory());
+
+            app.service('dummy').hooks({
+              before: checkPermissions({
+                roles: [permission],
+                field: 'deeply.nested'
+              })
+            });
+            const result = await app.service('dummy').create({ text: 'hello' }, params);
 
             assert.deepStrictEqual(result, {
               id: 0,
