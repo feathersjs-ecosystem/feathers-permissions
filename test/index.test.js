@@ -6,6 +6,7 @@ const checkPermissions = require('../lib');
 
 describe('feathers-permissions integration tests', () => {
   let app;
+
   describe('with predefined roles', () => {
     beforeEach(() => {
       app = feathers();
@@ -19,76 +20,82 @@ describe('feathers-permissions integration tests', () => {
       });
     });
 
+    it('errors when no roles are passed', () => {
+      assert.throws(() => checkPermissions(), {
+        message: '\'roles\' option for feathers-permissions hook must be an array or a function'
+      });
+    });
+
     describe('internal calls', () => {
-      it('does nothing when no entity is available', () => {
-        return app.service('messages').create({ text: 'hello' }).then(result => {
-          assert.deepStrictEqual(result, {
-            id: 0,
-            text: 'hello'
-          });
+      it('does nothing when no entity is available', async () => {
+        const result = await app.service('messages').create({ text: 'hello' });
+
+        assert.deepStrictEqual(result, {
+          id: 0,
+          text: 'hello'
         });
       });
 
-      it('sets isPermitted false when entity is available but has no permissions', () => {
+      it('sets isPermitted false when entity is available but has no permissions', async () => {
         const user = {
           email: 'someuser@example.com',
           permissions: []
         };
+
         app.service('messages').hooks({
           before (context) {
             context.data.permitted = context.params.permitted;
           }
         });
 
-        return app.service('messages').create({ text: 'hello' }, { user })
-          .then(result => {
-            assert.deepStrictEqual(result, {
-              id: 0,
-              text: 'hello',
-              permitted: false
-            });
-          });
+        const result = await app.service('messages').create({ text: 'hello' }, { user });
+
+        assert.deepStrictEqual(result, {
+          id: 0,
+          text: 'hello',
+          permitted: false
+        });
       });
 
-      it('sets isPermitted true when entity is available and has correct permissions', () => {
+      it('sets isPermitted true when entity is available and has correct permissions', async () => {
         const user = {
           email: 'someuser@example.com',
           permissions: ['admin:create']
         };
+
         app.service('messages').hooks({
           before (context) {
             context.data.permitted = context.params.permitted;
           }
         });
 
-        return app.service('messages').create({ text: 'hello' }, { user })
-          .then(result => {
-            assert.deepStrictEqual(result, {
-              id: 0,
-              text: 'hello',
-              permitted: true
-            });
-          });
+        const result = await app.service('messages').create({ text: 'hello' }, { user });
+
+        assert.deepStrictEqual(result, {
+          id: 0,
+          text: 'hello',
+          permitted: true
+        });
       });
     });
 
     describe('external calls', () => {
-      it('throws an error when no entity is available', () => {
+      it('throws an error when no entity is available', async () => {
         const params = { provider: 'test' };
 
-        return app.service('messages').create({ text: 'hello' }, params)
-          .then(() => assert.fail('Should never get here'))
-          .catch(error => assert.deepStrictEqual(error.toJSON(), {
-            name: 'Forbidden',
-            message: 'You do not have the correct permissions (invalid permission entity).',
-            code: 403,
-            className: 'forbidden',
-            data: undefined,
-            errors: {}
-          }));
+        await assert.rejects(async () => {
+          await app.service('messages').create({ text: 'hello' }, params);
+        }, {
+          name: 'Forbidden',
+          message: 'You do not have the correct permissions (invalid permission entity).',
+          code: 403,
+          className: 'forbidden',
+          data: undefined,
+          errors: {}
+        });
       });
 
-      it('throws an error when entity is available but has no permissions', () => {
+      it('throws an error when entity is available but has no permissions', async () => {
         const params = {
           provider: 'test',
           user: {
@@ -96,21 +103,21 @@ describe('feathers-permissions integration tests', () => {
           }
         };
 
-        return app.service('messages').create({ text: 'hello' }, params)
-          .then(() => assert.fail('Should never get here'))
-          .catch(error => assert.deepStrictEqual(error.toJSON(), {
-            name: 'Forbidden',
-            message: 'You do not have the correct permissions.',
-            code: 403,
-            className: 'forbidden',
-            data: undefined,
-            errors: {}
-          }));
+        await assert.rejects(async () => {
+          await app.service('messages').create({ text: 'hello' }, params);
+        }, {
+          name: 'Forbidden',
+          message: 'You do not have the correct permissions.',
+          code: 403,
+          className: 'forbidden',
+          data: undefined,
+          errors: {}
+        });
       });
 
       describe('successful permission', () => {
         ['*', 'admin:*', '*:create', 'admin:create'].forEach(permission => {
-          it(`allows the '${permission}' permission as array`, () => {
+          it(`allows the '${permission}' permission as array`, async () => {
             const params = {
               provider: 'test',
               user: {
@@ -119,14 +126,15 @@ describe('feathers-permissions integration tests', () => {
               }
             };
 
-            return app.service('messages').create({ text: 'hello' }, params)
-              .then(result => assert.deepStrictEqual(result, {
-                id: 0,
-                text: 'hello'
-              }));
+            const result = await app.service('messages').create({ text: 'hello' }, params);
+
+            assert.deepStrictEqual(result, {
+              id: 0,
+              text: 'hello'
+            });
           });
 
-          it(`allows the '${permission}' permission as string`, () => {
+          it(`allows the '${permission}' permission as string`, async () => {
             const params = {
               provider: 'test',
               user: {
@@ -135,18 +143,19 @@ describe('feathers-permissions integration tests', () => {
               }
             };
 
-            return app.service('messages').create({ text: 'hello' }, params)
-              .then(result => assert.deepStrictEqual(result, {
-                id: 0,
-                text: 'hello'
-              }));
+            const result = await app.service('messages').create({ text: 'hello' }, params);
+
+            assert.deepStrictEqual(result, {
+              id: 0,
+              text: 'hello'
+            });
           });
         });
       });
 
       describe('unsuccessful permission', () => {
         ['user:*', '*:update', 'admin:find'].forEach(permission => {
-          it(`fails the '${permission}' permission`, () => {
+          it(`fails the '${permission}' permission`, async () => {
             const params = {
               provider: 'test',
               user: {
@@ -155,16 +164,16 @@ describe('feathers-permissions integration tests', () => {
               }
             };
 
-            return app.service('messages').create({ text: 'hello' }, params)
-              .then(() => assert.fail('Should never get here'))
-              .catch(error => assert.deepStrictEqual(error.toJSON(), {
-                name: 'Forbidden',
-                message: 'You do not have the correct permissions.',
-                code: 403,
-                className: 'forbidden',
-                data: undefined,
-                errors: {}
-              }));
+            await assert.rejects(async () => {
+              await app.service('messages').create({ text: 'hello' }, params);
+            }, {
+              name: 'Forbidden',
+              message: 'You do not have the correct permissions.',
+              code: 403,
+              className: 'forbidden',
+              data: undefined,
+              errors: {}
+            });
           });
         });
       });
@@ -176,8 +185,8 @@ describe('feathers-permissions integration tests', () => {
       app = feathers();
       app.hooks({
         before: checkPermissions({
-          roles (context) {
-            return Promise.resolve(['admin', context.path]);
+          async roles (context) {
+            return ['admin', context.path];
           }
         })
       });
@@ -185,37 +194,37 @@ describe('feathers-permissions integration tests', () => {
     });
 
     describe('internal calls', () => {
-      it('does nothing when no entity is available', () => {
-        return app.service('messages').create({ text: 'hello' }).then(result => {
-          assert.deepStrictEqual(result, {
-            id: 0,
-            text: 'hello'
-          });
+      it('does nothing when no entity is available', async () => {
+        const result = await app.service('messages').create({ text: 'hello' });
+
+        assert.deepStrictEqual(result, {
+          id: 0,
+          text: 'hello'
         });
       });
 
-      it('sets isPermitted false when entity is available but has no permissions', () => {
+      it('sets isPermitted false when entity is available but has no permissions', async () => {
         const user = {
           email: 'someuser@example.com',
           permissions: []
         };
+
         app.service('messages').hooks({
           before (context) {
             context.data.permitted = context.params.permitted;
           }
         });
 
-        return app.service('messages').create({ text: 'hello' }, { user })
-          .then(result => {
-            assert.deepStrictEqual(result, {
-              id: 0,
-              text: 'hello',
-              permitted: false
-            });
-          });
+        const result = await app.service('messages').create({ text: 'hello' }, { user });
+
+        assert.deepStrictEqual(result, {
+          id: 0,
+          text: 'hello',
+          permitted: false
+        });
       });
 
-      it('sets isPermitted false when entity is available but has no permissions', () => {
+      it('sets isPermitted false when entity is available but has no permissions', async () => {
         const user = {
           email: 'someuser@example.com',
           permissions: ['messages:create']
@@ -226,34 +235,33 @@ describe('feathers-permissions integration tests', () => {
           }
         });
 
-        return app.service('messages').create({ text: 'hello' }, { user })
-          .then(result => {
-            assert.deepStrictEqual(result, {
-              id: 0,
-              text: 'hello',
-              permitted: true
-            });
-          });
+        const result = await app.service('messages').create({ text: 'hello' }, { user });
+
+        assert.deepStrictEqual(result, {
+          id: 0,
+          text: 'hello',
+          permitted: true
+        });
       });
     });
 
     describe('external calls', () => {
-      it('throws an error when no entity is available', () => {
+      it('throws an error when no entity is available', async () => {
         const params = { provider: 'test' };
 
-        return app.service('messages').create({ text: 'hello' }, params)
-          .then(() => assert.fail('Should never get here'))
-          .catch(error => assert.deepStrictEqual(error.toJSON(), {
-            name: 'Forbidden',
-            message: 'You do not have the correct permissions (invalid permission entity).',
-            code: 403,
-            className: 'forbidden',
-            data: undefined,
-            errors: {}
-          }));
+        await assert.rejects(async () => {
+          await app.service('messages').create({ text: 'hello' }, params);
+        }, {
+          name: 'Forbidden',
+          message: 'You do not have the correct permissions (invalid permission entity).',
+          code: 403,
+          className: 'forbidden',
+          data: undefined,
+          errors: {}
+        });
       });
 
-      it('throws an error when entity is available but has no permissions', () => {
+      it('throws an error when entity is available but has no permissions', async () => {
         const params = {
           provider: 'test',
           user: {
@@ -261,21 +269,21 @@ describe('feathers-permissions integration tests', () => {
           }
         };
 
-        return app.service('messages').create({ text: 'hello' }, params)
-          .then(() => assert.fail('Should never get here'))
-          .catch(error => assert.deepStrictEqual(error.toJSON(), {
-            name: 'Forbidden',
-            message: 'You do not have the correct permissions.',
-            code: 403,
-            className: 'forbidden',
-            data: undefined,
-            errors: {}
-          }));
+        await assert.rejects(async () => {
+          await app.service('messages').create({ text: 'hello' }, params);
+        }, {
+          name: 'Forbidden',
+          message: 'You do not have the correct permissions.',
+          code: 403,
+          className: 'forbidden',
+          data: undefined,
+          errors: {}
+        });
       });
 
       describe('successful permission', () => {
         ['*', 'messages:*', '*:create', 'messages:create'].forEach(permission => {
-          it(`allows the '${permission}' permission as array`, () => {
+          it(`allows the '${permission}' permission as array`, async () => {
             const params = {
               provider: 'test',
               user: {
@@ -284,14 +292,15 @@ describe('feathers-permissions integration tests', () => {
               }
             };
 
-            return app.service('messages').create({ text: 'hello' }, params)
-              .then(result => assert.deepStrictEqual(result, {
-                id: 0,
-                text: 'hello'
-              }));
+            const result = await app.service('messages').create({ text: 'hello' }, params);
+
+            assert.deepStrictEqual(result, {
+              id: 0,
+              text: 'hello'
+            });
           });
 
-          it(`allows the '${permission}' permission as string`, () => {
+          it(`allows the '${permission}' permission as string`, async () => {
             const params = {
               provider: 'test',
               user: {
@@ -300,18 +309,19 @@ describe('feathers-permissions integration tests', () => {
               }
             };
 
-            return app.service('messages').create({ text: 'hello' }, params)
-              .then(result => assert.deepStrictEqual(result, {
-                id: 0,
-                text: 'hello'
-              }));
+            const result = await app.service('messages').create({ text: 'hello' }, params);
+
+            assert.deepStrictEqual(result, {
+              id: 0,
+              text: 'hello'
+            });
           });
         });
       });
 
       describe('unsuccessful permission', () => {
         ['user:*', '*:update', 'messages:find'].forEach(permission => {
-          it(`fails the '${permission}' permission`, () => {
+          it(`fails the '${permission}' permission`, async () => {
             const params = {
               provider: 'test',
               user: {
@@ -320,16 +330,16 @@ describe('feathers-permissions integration tests', () => {
               }
             };
 
-            return app.service('messages').create({ text: 'hello' }, params)
-              .then(() => assert.fail('Should never get here'))
-              .catch(error => assert.deepStrictEqual(error.toJSON(), {
-                name: 'Forbidden',
-                message: 'You do not have the correct permissions.',
-                code: 403,
-                className: 'forbidden',
-                data: undefined,
-                errors: {}
-              }));
+            await assert.rejects(async () => {
+              await app.service('messages').create({ text: 'hello' }, params);
+            }, {
+              name: 'Forbidden',
+              message: 'You do not have the correct permissions.',
+              code: 403,
+              className: 'forbidden',
+              data: undefined,
+              errors: {}
+            });
           });
         });
       });
