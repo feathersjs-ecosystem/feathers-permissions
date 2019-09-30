@@ -1,5 +1,27 @@
 # Change Log
 
+## [v1.0.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v1.0.0) (2019-09-30)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v0.2.1...v1.0.0)
+
+**Implemented enhancements:**
+
+- Use checkPermissions with nested field [\#42](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/42)
+
+**Closed issues:**
+
+- context.params.permitted not set in child hook  [\#39](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/39)
+
+**Merged pull requests:**
+
+- Add TypeScript definitions [\#48](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/48) ([daffl](https://github.com/daffl))
+- Rename all roles options and references to permissions to be more clear [\#47](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/47) ([daffl](https://github.com/daffl))
+- Allow nested field for permissions [\#46](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/46) ([daffl](https://github.com/daffl))
+- Update to modern NodeJS [\#45](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/45) ([daffl](https://github.com/daffl))
+- Update dependencies to enable Greenkeeper 🌴 [\#44](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/44) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Edit describe to reflect test result [\#43](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/43) ([bartduisters](https://github.com/bartduisters))
+- Update README.md [\#41](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/41) ([antarasi](https://github.com/antarasi))
+- Update README.md [\#38](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/38) ([piyush-koradiya](https://github.com/piyush-koradiya))
+
 ## [v0.2.1](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v0.2.1) (2018-06-03)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v0.2.0...v0.2.1)
 
