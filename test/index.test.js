@@ -21,7 +21,7 @@ describe('feathers-permissions integration tests', () => {
 
       app.service('messages').hooks({
         before: checkPermissions({
-          roles: ['messages', 'admin']
+          permissions: ['messages', 'admin']
         })
       });
     });
