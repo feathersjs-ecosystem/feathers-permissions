@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.1.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v1.1.0) (2019-09-30)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v1.0.0...v1.1.0)
+
+**Merged pull requests:**
+
+- Rename option back to roles [\#49](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/49) ([daffl](https://github.com/daffl))
+
 ## [v1.0.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v1.0.0) (2019-09-30)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v0.2.1...v1.0.0)
 
