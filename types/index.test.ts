@@ -11,6 +11,6 @@ app.use('/dummy', {
 
 app.service('dummy').hooks({
   before: checkPermissions({
-    permissions: [ 'admin' ]
+    roles: [ 'admin' ]
   })
 });

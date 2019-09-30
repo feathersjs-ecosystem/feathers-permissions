@@ -21,7 +21,7 @@ npm install feathers-permissions --save
 
 ## Simple example
 
-The following example will limit all `messages` service calls to users that have `admin` in their `permissions`:
+The following example will limit all `messages` service calls to users that have `admin` in their `roles`:
 
 ```js
 const feathers = require('@feathersjs/feathers');
@@ -33,7 +33,7 @@ app.use('/messages', memory());
 
 app.service('messages').hooks({
   before: checkPermissions({
-    permissions: [ 'admin' ]
+    roles: [ 'admin' ]
   })
 });
 
@@ -46,32 +46,32 @@ const user = {
 
 ## Documentation
 
-Feathers permissions allows you to grant and manage permissions in a flexible nature. Each object that requires permissions must have an array or a comma separated string of permissions stored on it (typically in your database).
+Feathers permissions allows you to grant and manage permissions in a flexible nature based on role and service method. Each object that requires permissions must have an array or a comma separated string of permissions stored on it (typically in your database).
 
 ### Options
 
 The following options are available:
 
-- `permissions` - A list of permissions to check or a function that takes the hook `context` and returns a list of permissions. Can be a comma separated string of permissions or an array of permissions.
+- `roles` - A list of permission roles to check or a function that takes the hook `context` and returns a list of roles. Can be a comma separated string of roles or an array of roles.
 - `entity` (default: `user`) - The name of the entity (`params[entity]`)
-- `field` (default: `permissions`) - The name of the permissions field. May be dot separated to access nested fields.
+- `field` (default: `permissions`) - The name of the permissions field on the entity. May be dot separated to access nested fields.
 - `error` - If set to `false` will not throw a `Forbidden` error but instead set `params.permitted` to `true` or `false`. Useful for chaining permission hooks.
 
 ### Permission format
 
-The list of permissions will be obtained from `params[entity][field]`. It can be a comma separate list or an array of permissions in the following format:
+The list of permissions will be obtained from `params[entity]` and `field`. It can be a comma separate list or an array of permissions in the following format:
 
 - `*` - Allow everything
-- `${permission}` or `${permission}:*` - Allow every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `permission`
-- `*:${method}` - Allow `method` service method for any permission
-- `${permission}:${method}` - Allow `method` service method for `permission`
+- `${role}` or `${role}:*` - Allow every service method (`find`, `get`, `create`, `update`, `patch`, `remove`) for `role`
+- `*:${method}` - Allow `method` service method for any role
+- `${role}:${method}` - Allow `method` service method for `role`
 
 This means the following use of `feathers-permissions`:
 
 ```js
 app.service('messages').hooks({
   before: checkPermissions({
-    permissions: [ 'admin', 'user' ]
+    roles: [ 'admin', 'user' ]
   })
 });
 ```
@@ -83,7 +83,7 @@ The following will create a dynamic permission based on the hook [`context.path`
 ```js
 app.service('messages').hooks({
   before: checkPermissions({
-    permissions: context => {
+    roles: context => {
       return [ 'admin', context.path ];
     }
   })
@@ -95,7 +95,7 @@ Permissions can also be assembled asynchronously:
 ```js
 app.service('messages').hooks({
   before: checkPermissions({
-    permissions: async context => {
+    roles: async context => {
       const { user } = context.params;
       const roles = await app.service('roles').find({
         query: {
@@ -111,14 +111,14 @@ app.service('messages').hooks({
 
 ### Conditionally restricting permissions
 
-To conditionally either allow access by permission or otherwise restrict to the current user, a combination of `feathers-permissions` - setting the `error` option to `false` - [feathers-authentication-hooks](https://github.com/feathersjs-ecosystem/feathers-authentication-hooks) and [feathers-hooks-common#iff](https://feathers-plus.github.io/v1/feathers-hooks-common/#iff) (checking for `params.permitted`) can be used:
+To conditionally either allow access by roles or otherwise restrict to the current user, a combination of `feathers-permissions` - setting the `error` option to `false` - [feathers-authentication-hooks](https://github.com/feathersjs-ecosystem/feathers-authentication-hooks) and [feathers-hooks-common#iff](https://feathers-plus.github.io/v1/feathers-hooks-common/#iff) (checking for `params.permitted`) can be used:
 
 ```js
 app.service('messages').hooks({
   before: {
     find: [
       checkPermissions({
-        permissions: ['super_admin', 'admin'],
+        roles: ['super_admin', 'admin'],
         field: 'roles',
         error: false
       }),
@@ -142,21 +142,21 @@ app.use('/messages', memory());
 
 app.service('messages').hooks({
   before: checkPermissions({
-    permissions: [ 'admin', 'messages' ]
+    roles: [ 'admin', 'messages' ]
   })
 });
 
 // User from the database (e.g. added via @feathersjs/authentication)
 const user = {
   email: 'someuser@example.com',
-  permissions: [ 'messages:find', 'messages:get' ]
+  roles: [ 'messages:find', 'messages:get' ]
   // Also possible
-  permissions: 'messages:find,messages:get'
+  roles: 'messages:find,messages:get'
 }
 
 const admin = {
   email: 'someuser@example.com',
-  permissions: [ 'admin:*' ]
+  roles: [ 'admin:*' ]
 }
 
 // Will pass
