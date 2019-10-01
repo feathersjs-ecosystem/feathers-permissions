@@ -1,7 +1,6 @@
 # feathers-permissions
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs-ecosystem/feathers-permissions.svg)](https://greenkeeper.io/)
-
 [![Build Status](https://travis-ci.org/feathersjs-ecosystem/feathers-permissions.svg?branch=master)](https://travis-ci.org/feathersjs-ecosystem/feathers-permissions)
 [![Dependency Status](https://img.shields.io/david/feathersjs-ecosystem/feathers-permissions.svg?style=flat-square)](https://david-dm.org/feathersjs-ecosystem/feathers-permissions)
 [![Download Status](https://img.shields.io/npm/dm/feathers-permissions.svg?style=flat-square)](https://www.npmjs.com/package/feathers-permissions)
@@ -149,14 +148,14 @@ app.service('messages').hooks({
 // User from the database (e.g. added via @feathersjs/authentication)
 const user = {
   email: 'someuser@example.com',
-  roles: [ 'messages:find', 'messages:get' ]
+  permissions: [ 'messages:find', 'messages:get' ]
   // Also possible
-  roles: 'messages:find,messages:get'
+  permissions: 'messages:find,messages:get'
 }
 
 const admin = {
   email: 'someuser@example.com',
-  roles: [ 'admin:*' ]
+  permissions: [ 'admin:*' ]
 }
 
 // Will pass
