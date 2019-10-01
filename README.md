@@ -2,7 +2,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs-ecosystem/feathers-permissions.svg)](https://greenkeeper.io/)
 
-[![Build Status](https://travis-ci.org/feathersjs-ecosystem/feathers-permissions.png?branch=master)](https://travis-ci.org/feathersjs-ecosystem/feathers-permissions)
+[![Build Status](https://travis-ci.org/feathersjs/feathers.svg?branch=master)](https://travis-ci.org/feathersjs-ecosystem/feathers-permissions)
 [![Dependency Status](https://img.shields.io/david/feathersjs-ecosystem/feathers-permissions.svg?style=flat-square)](https://david-dm.org/feathersjs-ecosystem/feathers-permissions)
 [![Download Status](https://img.shields.io/npm/dm/feathers-permissions.svg?style=flat-square)](https://www.npmjs.com/package/feathers-permissions)
 [![Slack Status](http://slack.feathersjs.com/badge.svg)](http://slack.feathersjs.com)
