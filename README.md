@@ -122,7 +122,10 @@ app.service('messages').hooks({
         error: false
       }),
       iff(context => !context.params.permitted,
-        restrictToOwner({ idField: '_id', ownerField: '_id'})
+        setField({
+          from: 'params.user._id',
+          as: 'params.query.userId'
+        })
       )
     ]
   }
