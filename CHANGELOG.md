@@ -1,5 +1,21 @@
 # Change Log
 
+## [v2.0.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v2.0.0) (2020-01-09)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v1.1.0...v2.0.0)
+
+**Closed issues:**
+
+- An in-range update of @feathersjs/errors is breaking the build 🚨 [\#56](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/56)
+- An in-range update of @types/node is breaking the build 🚨 [\#52](https://github.com/feathersjs-ecosystem/feathers-permissions/issues/52)
+
+**Merged pull requests:**
+
+- Always error when entity is available but does not have permissions [\#58](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/58) ([daffl](https://github.com/daffl))
+- Update @types/node to the latest version 🚀 [\#57](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/57) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update dtslint to the latest version 🚀 [\#55](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/55) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Greenkeeper/dtslint 1.0.2 [\#54](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/54) ([daffl](https://github.com/daffl))
+- Greenkeeper/@types/node 12.12.5 [\#53](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/53) ([daffl](https://github.com/daffl))
+
 ## [v1.1.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v1.1.0) (2019-09-30)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v1.0.0...v1.1.0)
 
