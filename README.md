@@ -163,13 +163,11 @@ const admin = {
 
 // Will pass
 app.service('messages').find({
-  provider: 'rest', // this will be set automatically by external calls
   user
 });
 
 // Will fail
 app.service('messages').create({
-  provider: 'rest', // this will be set automatically by external calls
   user
 });
 

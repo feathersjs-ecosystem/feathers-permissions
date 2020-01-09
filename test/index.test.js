@@ -13,6 +13,14 @@ describe('feathers-permissions integration tests', () => {
     });
   });
 
+  it('errors when used as an after hook', async () => {
+    await assert.rejects(() => checkPermissions({
+      roles: ['something']
+    })({ type: 'after' }), {
+      message: 'The feathers-permissions hook should only be used as a \'before\' hook.'
+    });
+  });
+
   describe('with predefined roles', () => {
     beforeEach(() => {
       app = feathers();
@@ -36,28 +44,7 @@ describe('feathers-permissions integration tests', () => {
         });
       });
 
-      it('sets isPermitted false when entity is available but has no permissions', async () => {
-        const user = {
-          email: 'someuser@example.com',
-          permissions: []
-        };
-
-        app.service('messages').hooks({
-          before (context) {
-            context.data.permitted = context.params.permitted;
-          }
-        });
-
-        const result = await app.service('messages').create({ text: 'hello' }, { user });
-
-        assert.deepStrictEqual(result, {
-          id: 0,
-          text: 'hello',
-          permitted: false
-        });
-      });
-
-      it('sets isPermitted true when entity is available and has correct permissions', async () => {
+      it('sets permitted true when entity is available and has correct permissions', async () => {
         const user = {
           email: 'someuser@example.com',
           permissions: ['admin:create']
@@ -75,6 +62,48 @@ describe('feathers-permissions integration tests', () => {
           id: 0,
           text: 'hello',
           permitted: true
+        });
+      });
+
+      it('sets permitted false when error = false and does not have correct permissions', async () => {
+        const user = {
+          email: 'someuser@example.com',
+          permissions: ['admin:create']
+        };
+
+        app.use('/dummy', {
+          async create (data, { permitted }) {
+            return {
+              ...data,
+              permitted
+            };
+          }
+        });
+
+        app.service('dummy').hooks({
+          before: checkPermissions({
+            roles: ['dummy-permission'],
+            error: false
+          })
+        });
+
+        const result = await app.service('dummy').create({ text: 'hello' }, { user });
+
+        assert.deepStrictEqual(result, {
+          text: 'hello',
+          permitted: false
+        });
+      });
+
+      it('always throws error when entity is available but does not have permissions', async () => {
+        const user = {
+          email: 'someuser@example.com',
+          permissions: []
+        };
+
+        await assert.rejects(() => app.service('messages').create({ text: 'hello' }, { user }), {
+          name: 'Forbidden',
+          message: 'You do not have the correct permissions.'
         });
       });
     });
@@ -200,47 +229,6 @@ describe('feathers-permissions integration tests', () => {
         assert.deepStrictEqual(result, {
           id: 0,
           text: 'hello'
-        });
-      });
-
-      it('sets isPermitted false when entity is available but has no permissions', async () => {
-        const user = {
-          email: 'someuser@example.com',
-          permissions: []
-        };
-
-        app.service('messages').hooks({
-          before (context) {
-            context.data.permitted = context.params.permitted;
-          }
-        });
-
-        const result = await app.service('messages').create({ text: 'hello' }, { user });
-
-        assert.deepStrictEqual(result, {
-          id: 0,
-          text: 'hello',
-          permitted: false
-        });
-      });
-
-      it('sets isPermitted false when entity is available but has no permissions', async () => {
-        const user = {
-          email: 'someuser@example.com',
-          permissions: ['messages:create']
-        };
-        app.service('messages').hooks({
-          before (context) {
-            context.data.permitted = context.params.permitted;
-          }
-        });
-
-        const result = await app.service('messages').create({ text: 'hello' }, { user });
-
-        assert.deepStrictEqual(result, {
-          id: 0,
-          text: 'hello',
-          permitted: true
         });
       });
     });
