@@ -57,7 +57,7 @@
     "dtslint": "^2.0.0",
     "feathers-memory": "^4.0.1",
     "istanbul": "^1.1.0-alpha.1",
-    "mocha": "^6.2.1",
+    "mocha": "^7.0.1",
     "semistandard": "^14.2.0"
   }
 }
