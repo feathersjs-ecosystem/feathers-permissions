@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.0.1](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v2.0.1) (2020-02-02)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v2.0.0...v2.0.1)
+
+**Merged pull requests:**
+
+- :package: Added debug package, to prevent Yarn V2 error: A package is… [\#60](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/60) ([Sqveeze](https://github.com/Sqveeze))
+
 ## [v2.0.0](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v2.0.0) (2020-01-09)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v1.1.0...v2.0.0)
 
