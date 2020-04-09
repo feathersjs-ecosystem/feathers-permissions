@@ -1,7 +1,7 @@
 {
   "name": "feathers-permissions",
   "description": "Simple permissions module for Feathers",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "homepage": "https://github.com/feathersjs-ecosystem/feathers-permissions",
   "main": "lib/",
   "types": "types/",
