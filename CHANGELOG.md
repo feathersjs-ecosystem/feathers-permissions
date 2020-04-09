@@ -1,5 +1,14 @@
 # Change Log
 
+## [v2.0.2](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v2.0.2) (2020-04-09)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v2.0.1...v2.0.2)
+
+**Merged pull requests:**
+
+- Update all dependencies [\#65](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/65) ([daffl](https://github.com/daffl))
+- Role types [\#64](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/64) ([mkovel](https://github.com/mkovel))
+- Update dtslint to the latest version 🚀 [\#61](https://github.com/feathersjs-ecosystem/feathers-permissions/pull/61) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
 ## [v2.0.1](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v2.0.1) (2020-02-02)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v2.0.0...v2.0.1)
 
