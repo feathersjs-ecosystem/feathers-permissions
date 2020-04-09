@@ -14,3 +14,9 @@ app.service('dummy').hooks({
     roles: [ 'admin' ]
   })
 });
+
+app.service('dummy').hooks({
+  before: checkPermissions({
+    roles: async () => [ 'admin' ]
+  })
+});

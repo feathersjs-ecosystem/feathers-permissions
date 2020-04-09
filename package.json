@@ -34,8 +34,8 @@
     "changelog": "github_changelog_generator && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "lint": "semistandard --fix",
     "dtslint": "dtslint types",
-    "mocha": "mocha --opts mocha.opts",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --opts mocha.opts",
+    "mocha": "mocha --recursive test/",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test/",
     "test": "npm run lint && npm run dtslint && npm run coverage",
     "start": "npm run compile && node example/app"
   },
@@ -48,17 +48,17 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@feathersjs/errors": "^4.3.3",
+    "@feathersjs/errors": "^4.5.2",
     "lodash": "^4.17.15",
     "debug": "^4.1.1"
   },
   "devDependencies": {
-    "@feathersjs/feathers": "^4.3.3",
-    "@types/node": "^13.1.0",
-    "dtslint": "^3.0.0",
-    "feathers-memory": "^4.0.1",
+    "@feathersjs/feathers": "^4.5.2",
+    "@types/node": "^13.11.1",
+    "dtslint": "^3.4.1",
+    "feathers-memory": "^4.1.0",
     "istanbul": "^1.1.0-alpha.1",
-    "mocha": "^6.2.1",
+    "mocha": "^7.1.1",
     "semistandard": "^14.2.0"
   }
 }
