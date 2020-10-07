@@ -1,0 +1,46 @@
+{
+  "verbose": false,
+  "tempDirectory": "./coverage/.tmp",
+  "semistandard": {
+    "env": [
+      "mocha"
+    ]
+  },
+  "extension": [
+    ".ts",
+    ".tsx",
+    ".js"
+  ],
+  "exclude": [
+    "**/test/*",
+    "**/dist/*",
+    "**/*.dist.js",
+    "**/templates/*",
+    "**/adapter-commons/src/sort.ts"
+  ],
+  "print": "detail",
+  "reporter": [
+    "html",
+    "text",
+    "text-summary",
+    "lcov"
+  ],
+  "watermarks": {
+    "statements": [
+      70,
+      90
+    ],
+    "lines": [
+      70,
+      90
+    ],
+    "functions": [
+      70,
+      90
+    ],
+    "branches": [
+      70,
+      90
+    ]
+  }
+}
