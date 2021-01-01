@@ -12,11 +12,7 @@
     ".js"
   ],
   "exclude": [
-    "**/test/*",
-    "**/dist/*",
-    "**/*.dist.js",
-    "**/templates/*",
-    "**/adapter-commons/src/sort.ts"
+    "**/test/*"
   ],
   "print": "detail",
   "reporter": [
