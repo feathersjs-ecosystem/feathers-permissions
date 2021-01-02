@@ -27,7 +27,6 @@
     "node": ">= 10"
   },
   "scripts": {
-    "release": "semantic-release",
     "lint": "semistandard --fix",
     "dtslint": "dtslint types",
     "mocha": "mocha --recursive test/",
