@@ -58,7 +58,9 @@
   },
   "devDependencies": {
     "@feathersjs/feathers": "^4.5.8",
+    "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
     "@semantic-release/npm": "^7.0.9",
     "@semantic-release/release-notes-generator": "^9.0.1",
     "@types/node": "^14.11.5",
@@ -75,9 +77,8 @@
       "release"
     ],
     "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm"
+      "@semantic-release/changelog",
+      "@semantic-release/git"
     ]
   }
 }
