@@ -1,3 +1,5 @@
+# Changelog
+
 ## [2.1.4](https://github.com/feathersjs-ecosystem/feathers-permissions/compare/v2.1.3...v2.1.4) (2021-01-02)
 
 
@@ -6,7 +8,6 @@
 * **release:** Add missing semantic release plugin ([197a07e](https://github.com/feathersjs-ecosystem/feathers-permissions/commit/197a07e785fdc2b4e1bf2093f7eeeded7b5bda7e))
 * **release:** Another update to release process ([a7136cd](https://github.com/feathersjs-ecosystem/feathers-permissions/commit/a7136cd00ba02638fa783ac1f4ea8525f0dda5b3))
 
-# Changelog
 
 ## [v2.0.3](https://github.com/feathersjs-ecosystem/feathers-permissions/tree/v2.0.3) (2020-10-07)
 
