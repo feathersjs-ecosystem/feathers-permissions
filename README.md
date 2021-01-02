@@ -3,7 +3,6 @@
 [![CI](https://github.com/feathersjs-ecosystem/feathers-permissions/workflows/CI/badge.svg)](https://github.com/feathersjs-ecosystem/feathers-permissions/actions?query=workflow%3ACI)
 [![Dependency Status](https://img.shields.io/david/feathersjs-ecosystem/feathers-permissions.svg?style=flat-square)](https://david-dm.org/feathersjs-ecosystem/feathers-permissions)
 [![Download Status](https://img.shields.io/npm/dm/feathers-permissions.svg?style=flat-square)](https://www.npmjs.com/package/feathers-permissions)
-[![Slack Status](http://slack.feathersjs.com/badge.svg)](http://slack.feathersjs.com)
 
 > Simple role and service method permissions for Feathers
 
