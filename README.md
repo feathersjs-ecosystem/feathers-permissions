@@ -29,9 +29,12 @@ const app = feathers();
 app.use('/messages', memory());
 
 app.service('messages').hooks({
-  before: checkPermissions({
-    roles: [ 'admin' ]
-  })
+  before: [
+    authenticate('jwt'),
+    checkPermissions({
+      roles: [ 'admin' ]
+    })
+  ]
 });
 
 // User from the database
