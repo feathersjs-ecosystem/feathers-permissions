@@ -60,15 +60,15 @@
     "@feathersjs/feathers": "^4.5.11",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
-    "@types/node": "^15.0.3",
-    "dtslint": "^4.0.9",
+    "@types/node": "^15.6.1",
+    "dtslint": "^4.1.0",
     "feathers-memory": "^4.1.0",
     "mocha": "^8.4.0",
-    "npm-check-updates": "^11.5.11",
+    "npm-check-updates": "^11.6.0",
     "nyc": "^15.1.0",
     "semantic-release": "^17.4.3",
     "semistandard": "^16.0.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.2"
   },
   "release": {
     "branches": [
