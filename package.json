@@ -53,18 +53,18 @@
   ],
   "dependencies": {
     "@feathersjs/errors": "^4.5.11",
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@feathersjs/feathers": "^4.5.11",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
-    "@types/node": "^15.12.5",
-    "dtslint": "^4.1.1",
+    "@types/node": "^16.4.9",
+    "dtslint": "^4.1.3",
     "feathers-memory": "^4.1.0",
-    "mocha": "^9.0.1",
-    "npm-check-updates": "^11.7.1",
+    "mocha": "^9.0.3",
+    "npm-check-updates": "^11.8.3",
     "nyc": "^15.1.0",
     "semantic-release": "^17.4.4",
     "semistandard": "^16.0.1",
