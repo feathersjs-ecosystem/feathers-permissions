@@ -1,4 +1,4 @@
-import feathers from '@feathersjs/feathers';
+import { feathers } from '@feathersjs/feathers';
 import checkPermissions from 'feathers-permissions';
 
 const app = feathers();

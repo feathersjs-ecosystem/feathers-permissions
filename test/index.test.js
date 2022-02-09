@@ -1,6 +1,6 @@
 const assert = require('assert');
 const feathers = require('@feathersjs/feathers');
-const memory = require('feathers-memory');
+const memory = require('@feathersjs/memory');
 
 const checkPermissions = require('../lib');
 
@@ -25,7 +25,7 @@ describe('feathers-permissions integration tests', () => {
     beforeEach(() => {
       app = feathers();
 
-      app.use('/messages', memory());
+      app.use('/messages', memory.memory());
 
       app.service('messages').hooks({
         before: checkPermissions({
@@ -118,9 +118,7 @@ describe('feathers-permissions integration tests', () => {
           name: 'Forbidden',
           message: 'You do not have the correct permissions (invalid permission entity).',
           code: 403,
-          className: 'forbidden',
-          data: undefined,
-          errors: {}
+          className: 'forbidden'
         });
       });
 
@@ -138,9 +136,7 @@ describe('feathers-permissions integration tests', () => {
           name: 'Forbidden',
           message: 'You do not have the correct permissions.',
           code: 403,
-          className: 'forbidden',
-          data: undefined,
-          errors: {}
+          className: 'forbidden'
         });
       });
 
@@ -199,9 +195,7 @@ describe('feathers-permissions integration tests', () => {
               name: 'Forbidden',
               message: 'You do not have the correct permissions.',
               code: 403,
-              className: 'forbidden',
-              data: undefined,
-              errors: {}
+              className: 'forbidden'
             });
           });
         });
@@ -219,7 +213,7 @@ describe('feathers-permissions integration tests', () => {
           }
         })
       });
-      app.use('/messages', memory());
+      app.use('/messages', memory.memory());
     });
 
     describe('internal calls', () => {
@@ -243,9 +237,7 @@ describe('feathers-permissions integration tests', () => {
           name: 'Forbidden',
           message: 'You do not have the correct permissions (invalid permission entity).',
           code: 403,
-          className: 'forbidden',
-          data: undefined,
-          errors: {}
+          className: 'forbidden'
         });
       });
 
@@ -263,9 +255,7 @@ describe('feathers-permissions integration tests', () => {
           name: 'Forbidden',
           message: 'You do not have the correct permissions.',
           code: 403,
-          className: 'forbidden',
-          data: undefined,
-          errors: {}
+          className: 'forbidden'
         });
       });
 
@@ -317,7 +307,7 @@ describe('feathers-permissions integration tests', () => {
               }
             };
 
-            app.use('/dummy', memory());
+            app.use('/dummy', memory.memory());
 
             app.service('dummy').hooks({
               before: checkPermissions({
@@ -352,9 +342,7 @@ describe('feathers-permissions integration tests', () => {
               name: 'Forbidden',
               message: 'You do not have the correct permissions.',
               code: 403,
-              className: 'forbidden',
-              data: undefined,
-              errors: {}
+              className: 'forbidden'
             });
           });
         });
