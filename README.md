@@ -78,7 +78,7 @@ app.service('messages').hooks({
 
 Will allow user `permissions` containing `*`, `admin:*`, `user:*` and the service method that is being called (e.g. `admin:create` or `user:find` and `*:create` and `*:find`).
 
-The following will create a dynamic permission based on the hook [`context.path`](https://docs.feathersjs.com/api/hooks.html#contextpath):
+The following will create a dynamic permission based on the hook [`context.path`](https://docs.feathersjs.com/api/hooks.html#context-path):
 
 ```js
 app.service('messages').hooks({
